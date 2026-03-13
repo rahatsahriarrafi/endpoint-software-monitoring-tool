@@ -1,6 +1,6 @@
 import datetime
+import os
 from config import LOG_FILE
-
 
 # ---------------------------------
 # Write alert to log file
@@ -8,6 +8,9 @@ from config import LOG_FILE
 def log_event(message):
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     log_message = f"[{timestamp}] {message}\n"
+
+    # Ensure logs directory exists
+    os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
 
     with open(LOG_FILE, "a") as log:
         log.write(log_message)
@@ -48,3 +51,4 @@ def send_info(message):
     timestamp = datetime.datetime.now().strftime("%H:%M:%S")
 
     print(f"[{timestamp}] INFO → {message}")
+    log_event("INFO: " + message)
